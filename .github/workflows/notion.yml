@@ -1,0 +1,49 @@
+name: Notion pull CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Checkout your repository using git
+
+        uses: actions/checkout@v3
+        with:
+          repository: handshou/blog-content
+          token: ${{ secrets.CONTENT }}
+          path: ./src/pages
+      - run: |
+          find ./src/pages/blog/ -type f -name "*.md*" -exec sed -i.bak -nf formatfrontmatter.sed {} \;
+          cat ./src/pages/blog/*.md
+
+      - uses: withastro/action@v0
+        name: Install, build, and upload your site output
+      - uses: actions/upload-artifact@master
+        with:
+          name: dist-artifact
+          path: dist
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    name: Publish to Cloudflare Pages
+    steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: dist-artifact
+          path: dist
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 53c464573b64e485440feb5a5a36bb22
+          projectName: astro-blog
+          directory: dist
+          # Optional: Enable this if you want to have GitHub Deployments triggered
+          # gitHubToken: ${{ secrets.GITHUB_TOKEN }}
