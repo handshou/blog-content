@@ -1,5 +1,10 @@
 name: Notion fetch
-on: push
+on:
+  push:
+    branches:
+      - main
+  repository_dispatch:
+    types: [on-demand-test]
 jobs:
   notion:
     runs-on: ubuntu-latest
