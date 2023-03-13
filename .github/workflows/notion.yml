@@ -8,6 +8,7 @@ jobs:
       run: |
         echo "${{ secrets.NOTION_API_KEY }}" > .env
         echo "${{ secrets.DATABASE_ID }}" > .env
+        cat .env
       env:
         NOTION_API_KEY: ${{secrets.NOTION_API_KEY}}
         DATABASE_ID: ${{secrets.NOTION_API_KEY}}
