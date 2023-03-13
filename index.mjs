@@ -21,12 +21,12 @@ SaveNotion.prototype.fetchDatabase = function() {
     return queryDatabase(this.notion, this.DATABASE_ID);
 }
 
-SaveNotion.prototype.fetchPage = function(name) {
-    return queryPage(this.n2m, name);
+SaveNotion.prototype.fetchPage = function(pageId, pageName) {
+return queryPage(this.n2m, pageId, pageName);
 }
 
 const sn = new SaveNotion(process.env.DATABASE_ID);
 
 for(let pageId of await sn.fetchDatabase()) {
-    sn.fetchPage(`${pageId}.md`);
+    sn.fetchPage(pageId, `${pageId}.md`);
 }
