@@ -20,8 +20,7 @@ jobs:
     - run: npm i
     - run: node index.mjs  
 
-    - uses: withastro/action@v0
-      name: Install, build, and upload your site output
+      name: Upload artifact
     - uses: actions/upload-artifact@master
       with:
         name: blog-artifact
