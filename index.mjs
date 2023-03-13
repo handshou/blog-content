@@ -11,7 +11,6 @@ class SaveNotion {
             auth: process.env.NOTION_API_KEY,
           });
         const n2m = new NotionToMarkdown({ notionClient: notion });
-        console.log(process.env.NOTION_API_KEY);
         this.n2m = n2m;
         this.notion = notion;
         this.DATABASE_ID = DATABASE_ID;

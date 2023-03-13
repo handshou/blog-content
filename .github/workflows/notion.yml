@@ -5,11 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: 'Create env file'
+    - name: Create env file
       run: |
-        echo $NOTION_API_KEY > .env
-        echo $DATABASE_ID > .env
-        cat .env
+        touch .env
+        echo NOTION_API_KEY=${{ secrets.NOTION_API_KEY }} >> .env
+        echo DATABASE_ID=${{ secrets.DATABASE_ID }} >> .env
       env:
         NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
         DATABASE_ID: ${{ secrets.NOTION_API_KEY }}
