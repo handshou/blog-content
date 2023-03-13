@@ -20,11 +20,22 @@ jobs:
     - run: npm i
     - run: node index.mjs  
 
+    - uses: withastro/action@v0
+      name: Install, build, and upload your site output
+    - uses: actions/upload-artifact@master
+      with:
+        name: blog-artifact
+        path: blog
+
   commit-posts:
     needs: notion
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/download-artifact@master
+        with:
+          name: blog-artifact
+          path: blog
       - name: Commit blog content changes
         run: |
           git add .
