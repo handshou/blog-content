@@ -4,6 +4,7 @@ jobs:
   notion:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     - name: 'Create env file'
       env:
         NOTION_API_KEY: ${{secrets.NOTION_API_KEY}}
@@ -13,7 +14,6 @@ jobs:
         echo "$DATABASE_ID" > .env
         cat .env
 
-    - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
       with:
         node-version: 16
