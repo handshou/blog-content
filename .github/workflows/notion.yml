@@ -6,13 +6,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: 'Create env file'
-      env:
-        NOTION_API_KEY: ${{secrets.NOTION_API_KEY}}
-        DATABASE_ID: ${{secrets.NOTION_API_KEY}}
       run: |
-        echo "$NOTION_API_KEY" > .env
-        echo "$DATABASE_ID" > .env
+        echo $NOTION_API_KEY > .env
+        echo $DATABASE_ID > .env
         cat .env
+      env:
+        NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        DATABASE_ID: ${{ secrets.NOTION_API_KEY }}
 
     - uses: actions/setup-node@v3
       with:
