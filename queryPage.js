@@ -1,6 +1,4 @@
-import { promises as fsp } from 'fs'
 import fs from 'fs'
-import yaml from 'js-yaml'
 
 let queryPage = async (n2m, pageId, pageName) => {
   const mdblocks = await n2m.pageToMarkdown(pageId);
@@ -15,19 +13,10 @@ let queryPage = async (n2m, pageId, pageName) => {
   const filePath = `./${dir}/${pageName}`
 
   //writing to file
-  fsp.writeFile(filePath, mdString, (err) => {
+  fs.writeFile(filePath, mdString, (err) => {
     if (err)
         console.log(err);
-  }).then(() => {
-    try {
-      const doc = yaml.load(fs.readFileSync(filePath, 'utf8'))
-      console.log(doc);
-    } catch (e) {
-      console.error(e);
-    }
   });
-
-
 };
 
 export { queryPage };
