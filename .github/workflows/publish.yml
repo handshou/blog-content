@@ -16,6 +16,9 @@ jobs:
           repository: handshou/astro-blog
           token: ${{ secrets.PULL_ASTRO_REPO }}
           path: .
+      - uses: actions/upload-artifact@master
+        with:
+          name: blog-artifact
 
   download-posts:
     needs: pull-astro
@@ -24,6 +27,9 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/download-artifact@master
+        with:
+          name: blog-artifact
       - run: |
           mv ./blog ./src/pages/blog
           find ./src/pages/blog/ -type f -name "*.md*" -exec sed -i.bak -nf formatfrontmatter.sed {} \;
