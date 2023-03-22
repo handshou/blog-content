@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 import yaml from 'js-yaml'
 
 const dir = './src/pages/blog';
