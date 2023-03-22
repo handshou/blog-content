@@ -10,6 +10,10 @@ filesArr.forEach((file, index) => {
     let fullPath = path.join(folderPath, file);
     let fileExtension = path.extname(file);
     // let fileName = path.basename(file, fileExtension);
+
+    // do not need to parse backup files
+    if (String(fileExtension).includes(".bak"))
+        return;
     console.log({fullPath, fileExtension, folderPath, file})
     try {
         const doc = yaml.load(fs.readFileSync(fullPath, 'utf8'))
