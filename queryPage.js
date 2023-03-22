@@ -1,4 +1,4 @@
-import fs from 'fs'
+import { promises as fs } from 'fs'
 import yaml from 'js-yaml'
 
 let queryPage = async (n2m, pageId, pageName) => {
@@ -8,7 +8,7 @@ let queryPage = async (n2m, pageId, pageName) => {
 
   //writing to folder
   if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
+    await fs.mkdirSync(dir);
   }
 
   const filePath = `./${dir}/${pageName}`
@@ -17,14 +17,15 @@ let queryPage = async (n2m, pageId, pageName) => {
   fs.writeFile(filePath, mdString, (err) => {
     if (err)
         console.log(err);
+  }).then(() => {
+    try {
+      const doc = yaml.load(await fs.readFileSync(filePath, 'utf8'))
+      console.log(doc);
+    } catch (e) {
+      console.error(e);
+    }
   });
 
-  try {
-    const doc = yaml.load(fs.readFileSync(filePath, 'utf8'))
-    console.log(doc);
-  } catch (e) {
-    console.error(e);
-  }
 
 };
 
