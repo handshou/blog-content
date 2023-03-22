@@ -24,11 +24,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/download-artifact@master
-        with:
-          name: blog-artifact
-          path: ./src/pages/blog
       - run: |
+          mv ./blog ./src/pages/blog
           find ./src/pages/blog/ -type f -name "*.md*" -exec sed -i.bak -nf formatfrontmatter.sed {} \;
           cat ./src/pages/blog/*.md
       - uses: withastro/action@v0
