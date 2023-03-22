@@ -17,7 +17,7 @@ let queryPage = async (n2m, pageId, pageName) => {
   fs.writeFile(filePath, mdString, (err) => {
     if (err)
         console.log(err);
-  }).then(() => {
+  }).then(async () => {
     try {
       const doc = yaml.load(await fs.readFileSync(filePath, 'utf8'))
       console.log(doc);
