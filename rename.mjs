@@ -2,9 +2,9 @@ import fs from 'fs'
 import path from 'path'
 import yaml from 'js-yaml'
 
-const dir = './src/pages/blog';
+const folderPath = './src/pages/blog';
 
-let filesArr = fs.readdirSync(dir);
+let filesArr = fs.readdirSync(folderPath);
 
 filesArr.forEach((file, index) => {
     let fullPath = path.join(folderPath, file);
