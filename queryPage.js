@@ -1,4 +1,5 @@
 import fs from 'fs'
+import yaml from 'js-yaml'
 
 let queryPage = async (n2m, pageId, pageName) => {
   const mdblocks = await n2m.pageToMarkdown(pageId);
@@ -9,11 +10,22 @@ let queryPage = async (n2m, pageId, pageName) => {
   if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
   }
+
+  const filePath = `./${dir}/${pageName}`
+
   //writing to file
-  fs.writeFile(`./${dir}/${pageName}`, mdString, (err) => {
+  fs.writeFile(filePath, mdString, (err) => {
     if (err)
         console.log(err);
   });
+
+  try {
+    const doc = yaml.load(fs.readFileSync(filePath, 'utf8'))
+    console.log(doc);
+  } catch (e) {
+    console.error(e);
+  }
+
 };
 
 export { queryPage };

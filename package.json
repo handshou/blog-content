@@ -3,6 +3,7 @@
   "dependencies": {
     "@notionhq/client": "^2.2.3",
     "dotenv": "^16.0.3",
+    "js-yaml": "^4.1.0",
     "notion-to-md": "^2.5.5"
   },
   "type": "module"
