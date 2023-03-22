@@ -19,6 +19,7 @@ jobs:
       - uses: actions/upload-artifact@master
         with:
           name: blog-artifact
+          path: .
 
   download-posts:
     needs: pull-astro
@@ -30,6 +31,7 @@ jobs:
       - uses: actions/download-artifact@master
         with:
           name: blog-artifact
+          path: .
       - run: |
           mv ./blog ./src/pages/blog
           find ./src/pages/blog/ -type f -name "*.md*" -exec sed -i.bak -nf formatfrontmatter.sed {} \;
