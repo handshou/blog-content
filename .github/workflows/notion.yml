@@ -23,6 +23,7 @@ jobs:
       with:
         node-version: 16
     - run: npm i
+    - run: rm -rf ./blog
     - run: node index.mjs  
 
       name: Upload artifact
