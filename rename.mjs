@@ -10,7 +10,7 @@ filesArr.forEach((file, index) => {
     let fullPath = path.join(folderPath, file);
     let fileExtension = path.extname(file);
     // let fileName = path.basename(file, fileExtension);
-
+    console.log({fullPath, fileExtension, folderPath, file})
     try {
         const doc = yaml.load(fs.readFileSync(fullPath, 'utf8'))
         console.log(doc);
