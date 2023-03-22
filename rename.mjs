@@ -9,19 +9,14 @@ let filesArr = fs.readdirSync(folderPath);
 filesArr.forEach((file, index) => {
     let fullPath = path.join(folderPath, file);
     let fileExtension = path.extname(file);
-    let fileName = path.basename(file, fileExtension);
+    // let fileName = path.basename(file, fileExtension);
 
     try {
-        const doc = yaml.load(fs.readFileSync(filePath, 'utf8'))
+        const doc = yaml.load(fs.readFileSync(fullPath, 'utf8'))
         console.log(doc);
-    } catch (e) {
-    console.error(e);
-    }
-
-    let newFileName = fileName + index + "." + fileExtension;
-    try {
+        let newFileName = doc.slug + fileExtension;
         fs.renameSync(fullPath, path.join(folderPath, newFileName));
-    } catch (error) {
-        console.error(error)
+    } catch (e) {
+        console.error(e);
     }
 })
