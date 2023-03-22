@@ -17,7 +17,7 @@ jobs:
           path: .
 
   download-posts:
-    needs: notion
+    needs: build
     runs-on: ubuntu-latest
     permissions: 
       contents: write
@@ -38,7 +38,7 @@ jobs:
           path: dist
 
   publish:
-    needs: build
+    needs: download-posts
     runs-on: ubuntu-latest
     permissions:
       contents: read
