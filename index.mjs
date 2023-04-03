@@ -3,6 +3,7 @@ dotenv.config()
 import { NotionToMarkdown } from "notion-to-md";
 import { queryDatabase } from './queryDatabase.js';
 import { queryPage } from './queryPage.js';
+import { retrievePage } from './retrievePage.js';
 import { Client } from '@notionhq/client';
 
 class SaveNotion {
@@ -22,11 +23,23 @@ SaveNotion.prototype.fetchDatabase = function() {
 }
 
 SaveNotion.prototype.fetchPage = function(pageId, pageName) {
-return queryPage(this.n2m, pageId, pageName);
+    return queryPage(this.n2m, pageId, pageName);
+}
+
+SaveNotion.prototype.retrievePageTitle = function(pageId) {
+    const fetchPage = Promise.resolve(retrievePage(this.notion, pageId));
+    return fetchPage.then(response => {
+        const { properties } = response;
+        if(properties.Name)
+            return `${properties.Name.title[0]["plain_text"].replace(/\s+/g, '-').toLowerCase()}.md`;
+        else
+            return `${pageId}.md`;
+    })
 }
 
 const sn = new SaveNotion(process.env.DATABASE_ID);
 
 for(let pageId of await sn.fetchDatabase()) {
-    sn.fetchPage(pageId, `${pageId}.md`);
+    const pageName = await sn.retrievePageTitle(pageId);
+    sn.fetchPage(pageId, pageName);
 }
