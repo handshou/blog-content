@@ -1,4 +1,4 @@
-name: notion
+name: notion-process
 on:
   push:
     branches:
