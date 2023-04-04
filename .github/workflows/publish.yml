@@ -1,16 +1,16 @@
-name: Publish to cloudflare
+name: cloudflare
 on:
   workflow_run:
-    workflows: ["Notion fetch"]
+    workflows: ["notion"]
     types:
       - completed
 
 jobs:
-  pull-astro:
+  design:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Checkout your repository using git
+      - name: Checkout Design - external repository
         uses: actions/checkout@v3
         with:
           repository: handshou/astro-blog
@@ -21,8 +21,8 @@ jobs:
           name: blog-artifact
           path: .
 
-  download-posts:
-    needs: pull-astro
+  content:
+    needs: design
     runs-on: ubuntu-latest
     permissions: 
       contents: write
@@ -39,27 +39,30 @@ jobs:
           cat ./src/pages/blog/*.md
           npm install --save-dev fs path js-yaml
           node rename.mjs
+
+      - name: astro
       - uses: withastro/action@v0
-        name: Install, build, and upload your site output
+        
+        name: upload artifact
       - uses: actions/upload-artifact@master
         with:
           name: dist-artifact
           path: dist
 
   publish:
-    needs: download-posts
+    needs: content
     runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write
-    name: Publish to Cloudflare Pages
+    name: download content
     steps:
       - uses: actions/download-artifact@master
         with:
           name: dist-artifact
           path: dist
 
-      - name: Publish to Cloudflare Pages
+      - name: cloudflare
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

@@ -1,16 +1,19 @@
-name: Notion fetch
+name: notion
 on:
   push:
     branches:
       - main
   repository_dispatch:
-    types: [fetch-notion-webhook]
+    types: [notion-hook]
+
 jobs:
   notion:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout Scripts - current repository
     - uses: actions/checkout@v3
-    - name: Create env file
+
+    - name: Create Env
       run: |
         touch .env
         echo NOTION_API_KEY=${{ secrets.NOTION_API_KEY }} >> .env
@@ -19,6 +22,7 @@ jobs:
         NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
         DATABASE_ID: ${{ secrets.DATABASE_ID }}
 
+    - name: Run Scripts - node
     - uses: actions/setup-node@v3
       with:
         node-version: 16
@@ -32,7 +36,7 @@ jobs:
         name: blog-artifact
         path: blog
 
-  commit-posts:
+  commit-to-repo:
     needs: notion
     runs-on: ubuntu-latest
     permissions: 
@@ -52,42 +56,3 @@ jobs:
           git config --global user.email 'hanselhub@gmail.com'
           git commit -am "chore: update blog"
           git push
-
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: handshou/blog-content
-      #     token: ${{ secrets.CONTENT }}
-      #     path: ./src/pages
-      # - run: |
-      #     find ./src/pages/blog/ -type f -name "*.md*" -exec sed -i.bak -nf formatfrontmatter.sed {} \;
-      #     cat ./src/pages/blog/*.md
-
-      # - uses: withastro/action@v0
-      #   name: Install, build, and upload your site output
-      # - uses: actions/upload-artifact@master
-      #   with:
-      #     name: dist-artifact
-      #     path: dist
-
-  # publish:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: read
-  #     deployments: write
-  #   name: Publish to Cloudflare Pages
-  #   steps:
-  #     - uses: actions/download-artifact@master
-  #       with:
-  #         name: dist-artifact
-  #         path: dist
-
-  #     - name: Publish to Cloudflare Pages
-  #       uses: cloudflare/pages-action@v1
-  #       with:
-  #         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-  #         accountId: 53c464573b64e485440feb5a5a36bb22
-  #         projectName: astro-blog
-  #         directory: dist
-  #         # Optional: Enable this if you want to have GitHub Deployments triggered
-  #         # gitHubToken: ${{ secrets.GITHUB_TOKEN }}
