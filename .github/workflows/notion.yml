@@ -10,7 +10,7 @@ jobs:
   notion:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Scripts - current repository
+      name: Checkout Scripts - current repository
     - uses: actions/checkout@v3
 
     - name: Create Env

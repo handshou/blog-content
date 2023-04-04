@@ -40,7 +40,7 @@ jobs:
           npm install --save-dev fs path js-yaml
           node rename.mjs
 
-      - name: astro
+        name: astro
       - uses: withastro/action@v0
         
         name: upload artifact
