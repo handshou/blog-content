@@ -22,13 +22,11 @@ jobs:
         NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
         DATABASE_ID: ${{ secrets.DATABASE_ID }}
 
-    - name: Run Scripts - node
-      uses: actions/setup-node@v3
-      with:
-        node-version: 16
-    - run: npm i
-    - run: rm -rf ./blog
-    - run: node index.mjs  
+    - name: Run Scripts
+      run: |
+        npm i
+        rm -rf ./blog
+        node index.mjs  
 
     - name: Upload artifact
       uses: actions/upload-artifact@master
@@ -42,13 +40,15 @@ jobs:
     permissions: 
       contents: write
     steps:
-      - uses: actions/checkout@v3
-      - name: Remove old blog data
+      - name: Checkout current repository then remove old blog data
+        uses: actions/checkout@v3
         run: rm -rf ./blog
+
       - uses: actions/download-artifact@master
         with:
           name: blog-artifact
           path: blog
+
       - name: Commit blog content changes
         run: |
           git add .

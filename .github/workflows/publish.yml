@@ -10,12 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Checkout Design - external repository
         uses: actions/checkout@v3
         with:
           repository: handshou/astro-blog
           token: ${{ secrets.PULL_ASTRO_REPO }}
           path: .
+
       - uses: actions/upload-artifact@master
         with:
           name: blog-artifact
@@ -28,11 +30,12 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/download-artifact@master
         with:
           name: blog-artifact
           path: .
-      - run: |
+        run: |
           rm -rf ./src/pages/blog
           mv ./blog ./src/pages
           find ./src/pages/blog/ -type f -name "*.md*" -exec sed -i.bak -nf formatfrontmatter.sed {} \;
@@ -40,11 +43,11 @@ jobs:
           npm install --save-dev fs path js-yaml
           node rename.mjs
 
-        name: astro
-      - uses: withastro/action@v0
+      - name: astro
+        uses: withastro/action@v0
         
-        name: upload artifact
-      - uses: actions/upload-artifact@master
+      - name: upload artifact
+        uses: actions/upload-artifact@master
         with:
           name: dist-artifact
           path: dist
