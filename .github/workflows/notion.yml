@@ -40,8 +40,10 @@ jobs:
     permissions: 
       contents: write
     steps:
-      - name: Checkout current repository then remove old blog data
+      - name: Checkout current repository
         uses: actions/checkout@v3
+        
+      - name: Remove old blog data
         run: rm -rf ./blog
 
       - uses: actions/download-artifact@master
