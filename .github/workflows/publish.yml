@@ -35,7 +35,7 @@ jobs:
         with:
           name: blog-artifact
           path: .
-        run: |
+      - run: |
           rm -rf ./src/pages/blog
           mv ./blog ./src/pages
           find ./src/pages/blog/ -type f -name "*.md*" -exec sed -i.bak -nf formatfrontmatter.sed {} \;
