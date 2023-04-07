@@ -14,12 +14,22 @@ jobs:
       uses: actions/checkout@v3
     - name: Create Env
       run: |
+        npm i
+        type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+          && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+          && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+          && sudo apt update \
+          && sudo apt install gh -y
+        gh secret list >> .secrets
+        node setSecrets.mjs .secrets
         touch .env
         echo NOTION_API_KEY=${{ secrets.NOTION_API_KEY }} >> .env
-        echo DATABASE_ID=${{ secrets.DATABASE_ID }} >> .env
+        echo NOTION_DATABASE_ID=${{ secrets.NOTION_DATABASE_ID }} >> .env
+        echo GH_USERNAME=${{ secrets.GH_USERNAME }} >> .env
+        echo GH_EMAIL=${{ secrets.GH_EMAIL }} >> .env
       env:
         NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-        DATABASE_ID: ${{ secrets.DATABASE_ID }}
     - name: Run Scripts
       run: |
         npm i
@@ -48,7 +58,7 @@ jobs:
       - name: Commit blog content changes
         run: |
           git add .
-          git config --global user.name '${{ secrets.GITHUB_USERNAME }}'
-          git config --global user.email '${{ secrets.GITHUB_EMAIL }}'
+          git config --global user.name '${{ secrets.GH_USERNAME }}'
+          git config --global user.email '${{ secrets.GH_EMAIL }}'
           git commit -am "chore: update blog"
           git push

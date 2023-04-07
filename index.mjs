@@ -16,6 +16,8 @@ class SaveNotion {
         this.notion = notion;
         this.DATABASE_ID = DATABASE_ID;
     }
+
+    
 }
 
 SaveNotion.prototype.fetchDatabase = function() {
