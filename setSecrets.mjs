@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config()
-import { exec } from "node:child_process";
+import { spawn } from "node:child_process";
 import fs from 'fs';
 
 if (process.argv.length === 2) {
@@ -17,7 +17,7 @@ if (process.argv[2]) {
     fs.access(envPath, fs.F_OK, (error) => {
         if (error) {
             console.error(error);
-            process.exit(1);
+            process.exit(0);
         } 
     })
     let envs = fs.readFileSync(envPath, 'utf8').toString().split("\n");
@@ -48,7 +48,14 @@ function createSecret(name, secret) {
     if (!secret) return;
 
     function printOutput(error, stdout, stderr) {
-        console.log("STDOUT:", stdout, ", STDERR:", stderr);
+        if (error) {
+            console.error(error);
+            return;
+        }
+        if (stderr) {
+            console.error(`STDERR: ${stderr}`)
+        }
+        console.log(`STDOUT: ${stdout}`);
     }
-    exec(`gh secret set ${name} && ${secret}`, printOutput);
+    spawn(`gh secret set ${name} && ${secret}`, printOutput);
 }
