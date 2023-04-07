@@ -10,9 +10,8 @@ jobs:
   notion:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Scripts - current repository
+    - name: Checkout current repository
       uses: actions/checkout@v3
-
     - name: Create Env
       run: |
         touch .env
@@ -21,13 +20,11 @@ jobs:
       env:
         NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
         DATABASE_ID: ${{ secrets.DATABASE_ID }}
-
     - name: Run Scripts
       run: |
         npm i
         rm -rf ./blog
         node index.mjs  
-
     - name: Upload artifact
       uses: actions/upload-artifact@master
       with:
@@ -42,19 +39,16 @@ jobs:
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v3
-
       - name: Remove old blog data
         run: rm -rf ./blog
-
       - uses: actions/download-artifact@master
         with:
           name: blog-artifact
           path: blog
-
       - name: Commit blog content changes
         run: |
           git add .
-          git config --global user.name 'handshou'
-          git config --global user.email 'handshou@users.noreply.github.com'
+          git config --global user.name '${{ secrets.GITHUB_USERNAME }}'
+          git config --global user.email '${{ secrets.GITHUB_EMAIL }}'
           git commit -am "chore: update blog"
           git push

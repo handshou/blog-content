@@ -37,7 +37,7 @@ SaveNotion.prototype.retrievePageTitle = function(pageId) {
     })
 }
 
-const sn = new SaveNotion(process.env.DATABASE_ID);
+const sn = new SaveNotion(process.env.NOTION_DATABASE_ID);
 
 for(let pageId of await sn.fetchDatabase()) {
     const pageName = await sn.retrievePageTitle(pageId);
