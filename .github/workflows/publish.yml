@@ -13,9 +13,11 @@ jobs:
       - name: Checkout Design - external repository
         uses: actions/checkout@v3
         with:
-          repository: ${{ secrets.GITHUB_USERNAME }}/astro-blog
+          repository: ${{ env.GH_USERNAME }}/astro-blog
           token: ${{ secrets.PULL_ASTRO_REPO }}
           path: .
+        env:
+          GH_USERNAME: ${{ secrets.GH_USERNAME }}
       - uses: actions/upload-artifact@master
         with:
           name: blog-artifact
