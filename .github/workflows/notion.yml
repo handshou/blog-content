@@ -12,7 +12,13 @@ jobs:
     steps:
     - name: Checkout current repository
       uses: actions/checkout@v3
-    - name: Create Env
+    - name: Check env existence
+      id:   check_env
+      uses: andstor/file-existence-action@v1
+      with:
+        files: ".env"
+    - name: Set Env
+      if: steps.check_files.outputs.files_exists == 'true'
       run: |
         npm i
         type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
@@ -23,6 +29,8 @@ jobs:
           && sudo apt install gh -y
         gh secret list >> .secrets
         node setSecrets.mjs .secrets
+    - name: Create Env
+      run: |
         touch .env
         echo NOTION_API_KEY=${{ secrets.NOTION_API_KEY }} >> .env
         echo NOTION_DATABASE_ID=${{ secrets.NOTION_DATABASE_ID }} >> .env
