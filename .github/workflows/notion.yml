@@ -29,6 +29,7 @@ jobs:
         echo GH_USERNAME=${{ secrets.GH_USERNAME }} >> .env
         echo GH_EMAIL=${{ secrets.GH_EMAIL }} >> .env
       env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
         NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
     - name: Run Scripts
       run: |
