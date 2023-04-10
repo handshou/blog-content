@@ -40,7 +40,7 @@ jobs:
           find ./src/pages/blog/ -type f -name "*.md*" -exec sed -i.bak -nf formatfrontmatter.sed {} \;
           cat ./src/pages/blog/*.md
           npm install --save-dev fs path js-yaml
-          node rename.mjs
+          node scripts/rename.mjs
       - name: astro
         uses: withastro/action@v0
       - name: upload artifact

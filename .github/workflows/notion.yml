@@ -28,7 +28,7 @@ jobs:
           && sudo apt update \
           && sudo apt install gh -y
         gh secret list >> .secrets
-        node setSecrets.mjs .secrets
+        node scripts/setSecrets.mjs .secrets
     - name: Create Env
       run: |
         touch .env
@@ -43,7 +43,7 @@ jobs:
       run: |
         npm i
         rm -rf ./blog
-        node index.mjs  
+        node scripts/index.mjs  
     - name: Upload artifact
       uses: actions/upload-artifact@master
       with:

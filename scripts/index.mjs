@@ -1,9 +1,9 @@
 import * as dotenv from 'dotenv';
 dotenv.config()
 import { NotionToMarkdown } from "notion-to-md";
-import { queryDatabase } from './queryDatabase.js';
-import { queryPage } from './queryPage.js';
-import { retrievePage } from './retrievePage.js';
+import { queryDatabase } from '../packages/savenotion/queryDatabase.js';
+import { queryPage } from '../packages/savenotion/queryPage.js';
+import { retrievePage } from '../packages/savenotion/retrievePage.js';
 import { Client } from '@notionhq/client';
 
 class SaveNotion {
@@ -16,8 +16,6 @@ class SaveNotion {
         this.notion = notion;
         this.DATABASE_ID = DATABASE_ID;
     }
-
-    
 }
 
 SaveNotion.prototype.fetchDatabase = function() {
