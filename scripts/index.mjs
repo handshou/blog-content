@@ -30,8 +30,8 @@ SaveNotion.prototype.retrievePageTitle = function(pageId) {
     const fetchPage = Promise.resolve(retrievePage(this.notion, pageId));
     return fetchPage.then(response => {
         const { properties } = response;
-        if(properties.Name)
-            return `${properties.Name.title[0]["plain_text"].replace(/\s+/g, '-').toLowerCase()}.md`;
+        if(properties.Post)
+            return `${properties.Post.title[0]["plain_text"].replace(/\s+/g, '-').toLowerCase()}.md`;
         else
             return `${pageId}.md`;
     })
