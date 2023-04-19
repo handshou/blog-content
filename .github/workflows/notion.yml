@@ -34,10 +34,8 @@ jobs:
         touch .env
         echo NOTION_API_KEY=${{ secrets.NOTION_API_KEY }} >> .env
         echo NOTION_DATABASE_ID=${{ secrets.NOTION_DATABASE_ID }} >> .env
-        echo GH_USERNAME=${{ github.repository_name }} >> .env
-        echo GH_EMAIL=${{ secrets.GH_EMAIL }} >> .env
       env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
     - name: Run Scripts
       run: |
@@ -67,7 +65,7 @@ jobs:
       - name: Commit blog content changes
         run: |
           git add .
-          git config --global user.name '${{ github.repository_name }}'
-          git config --global user.email '${{ secrets.GH_EMAIL }}'
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
           git commit -am "chore: update blog"
           git push
