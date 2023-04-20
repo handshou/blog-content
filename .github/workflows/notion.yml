@@ -35,7 +35,6 @@ jobs:
         echo NOTION_API_KEY=${{ secrets.NOTION_API_KEY }} >> .env
         echo NOTION_DATABASE_ID=${{ secrets.NOTION_DATABASE_ID }} >> .env
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
     - name: Run Scripts
       run: |
@@ -63,9 +62,12 @@ jobs:
           name: blog-artifact
           path: blog
       - name: Commit blog content changes
-        run: |
-          git add .
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git commit -am "chore: update blog"
-          git push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore: update blog"
+          branch: main
+          file_pattern: "*.mdx"
+          commit_user_name: github-actions[bot]
+          commit_user_email: github-actions[bot]@users.noreply.github.com
+          disable_globbing: true
+
