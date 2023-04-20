@@ -69,6 +69,6 @@ jobs:
           file_pattern: "*.mdx"
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
-          commit_author: Author <actions@github.com>
+          commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
           disable_globbing: true
 
