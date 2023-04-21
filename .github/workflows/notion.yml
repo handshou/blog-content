@@ -41,6 +41,7 @@ jobs:
         npm i
         rm -rf ./blog
         node scripts/index.mjs  
+        node scripts/frontmatter.mjs 
     - name: Upload artifact
       uses: actions/upload-artifact@master
       with:

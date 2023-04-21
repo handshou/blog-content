@@ -35,7 +35,6 @@ jobs:
       - run: |
           rm -rf ./src/pages/blog
           mv ./blog ./src/pages
-          find ./src/pages/blog/ -type f -name "*.md*" -exec sed -i.bak -nf formatfrontmatter.sed {} \;
           cat ./src/pages/blog/*.md
           npm install --save-dev fs path js-yaml
           node scripts/rename.mjs
