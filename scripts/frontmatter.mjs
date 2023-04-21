@@ -63,8 +63,9 @@ let parseFrontMatter = (file) => fs.readFile(file, 'utf-8', (err, data) => {
     )
 })
 
-fs.readdir('./blog', (err, files) => {
+let dir = './blog'
+fs.readdir(dir, (err, files) => {
   files.forEach(file => {
-    parseFrontMatter(file);
+    parseFrontMatter(`${dir}/${file}`);
   });
 });
