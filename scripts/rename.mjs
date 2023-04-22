@@ -2,7 +2,9 @@ import fs from 'fs'
 import path from 'path'
 import yaml from 'js-yaml'
 
-const folderPath = './src/pages/blog';
+const args = process.argv.slice(2);
+
+const folderPath = './src/pages/' + args[0];
 
 let filesArr = fs.readdirSync(folderPath);
 

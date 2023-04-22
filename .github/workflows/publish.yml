@@ -18,7 +18,7 @@ jobs:
           path: .
       - uses: actions/upload-artifact@master
         with:
-          name: blog-artifact
+          name: ${{ secrets.FOLDER_NAME }}-artifact
           path: .
 
   content:
@@ -36,7 +36,7 @@ jobs:
           rm -rf ./src/pages/${{ secrets.FOLDER_NAME }}
           mv ./${{ secrets.FOLDER_NAME }} ./src/pages
           npm install --save-dev fs path js-yaml
-          node scripts/rename.mjs
+          node scripts/rename.mjs ${{ secrets.FOLDER_NAME }}
       - name: astro
         uses: withastro/action@v0
       - name: upload artifact

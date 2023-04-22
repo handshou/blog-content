@@ -1,8 +1,7 @@
 import fs from 'fs'
 
-//let args = process.argv.slice(2);
-
-//const folderPath = args[0];
+const args = process.argv.slice(2);
+const folderPath = args[0];
 //const fileName = args[1];
 
 let fileData = ''
@@ -63,7 +62,7 @@ let parseFrontMatter = (file) => fs.readFile(file, 'utf8', (err, data) => {
     )
 })
 
-let dir = './blog'
+let dir = './' + folderPath
 fs.readdir(dir, (err, files) => {
     if (err) throw err
     files.forEach(file => {

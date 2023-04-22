@@ -1,3 +1,8 @@
+## Todo
+
+- [ ] Rewrite/streamline publish.yml
+- [ ] Include details/images to prepare ENV in README
+
 ## Rename .env.example to .env
 ```yaml
 NOTION_TOKEN=               # <from notion>
@@ -8,6 +13,7 @@ CLOUDFLARE_API_TOKEN=       # <from cloudflare>
 CLOUDFLARE_ACCOUNT_ID=      # <from cloudflare>
 FOLDER_NAME=                # blog
 DESIGN_REPO_NAME=           # astro-blog
+PULL_ASTRO_REPO=            # <design repo token required if design repo is PRIVATE>
 ```
 
 ## Install and run
