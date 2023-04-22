@@ -26,7 +26,7 @@ let isAtFirstCodeBlock = (delimiterCodeCount) =>
 let isPastFirstCodeBlock = (delimiterCodeCount) =>
     delimiterCodeCount > 2
 
-let parseFrontMatter = (file) => fs.readFile(file, 'utf-8', (err, data) => {
+let parseFrontMatter = (file) => fs.readFile(file, 'utf8', (err, data) => {
     if (err) throw err
 
     fileData = data.split('\n')
@@ -56,7 +56,7 @@ let parseFrontMatter = (file) => fs.readFile(file, 'utf-8', (err, data) => {
     fs.writeFile(
         file,
         removeLines(data, linesToRemoveStack),
-        'utf-8',
+        'utf8',
         function(err) {
             if (err) throw err
         }
@@ -65,7 +65,8 @@ let parseFrontMatter = (file) => fs.readFile(file, 'utf-8', (err, data) => {
 
 let dir = './blog'
 fs.readdir(dir, (err, files) => {
-  files.forEach(file => {
-    parseFrontMatter(`${dir}/${file}`);
-  });
+    if (err) throw err
+    files.forEach(file => {
+        parseFrontMatter(`${dir}/${file}`);
+    });
 });

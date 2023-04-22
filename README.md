@@ -1,50 +1,79 @@
+## Rename .env.example to .env
+```yaml
+NOTION_TOKEN=               # <from notion>
+NOTION_DATABASE_ID=         # <from notion, add database connections, read access>
+CLOUDINARY_URL=             # <from cloudinary>
+CLOUDINARY_UPLOAD_FOLDER=   # <create a cloudinary folder> e.g. site
+CLOUDFLARE_API_TOKEN=       # <from cloudflare>
+CLOUDFLARE_ACCOUNT_ID=      # <from cloudflare>
+FOLDER_NAME=                # blog
+DESIGN_REPO_NAME=           # astro-blog
+```
+
+## Install and run
+```
+npm install
+npm run dev
+```
+
+## File structure
+
+```tree
+.
+├── .               # README.md, pkg.json, etc
+├── blog            # FOLDER_NAME .env
+│   └── post.mdx    # Markdown files
+├── packages
+│   └── savenotion
+│       ├── queryDatabase.js
+│       ├── queryPage.js
+│       └── retrievePage.js
+└── scripts
+    ├── index.mjs
+    ├── frontmatter.mjs
+    ├── rename.mjs
+    └── setSecrets.mjs
+```
+
+## Workflows
+
 ```mermaid
 ---
-title: Full process
+title: GH Actions
 ---
 graph LR
     Start(( ))
     Start--Webhook-->Notion
-    subgraph Notion Workflow
-    Notion[(Notion\nDB)]
-    GH(Github)
-    Notion--.MDX-->GH
+
+    subgraph Notion.yml
+        Notion[(Notion)]
+        GH[(Github)]
+        CL[(Cloudinary)]
+        Notion--Images-->CL
+        Notion--Markdown-->GH
     end
+        
     GH--Webhook-->Astro
-    subgraph Publish Workflow
-    Astro(Astro Build)
-    CloudFlare(CloudFlare\nPages)
-    Astro--HTML-->CloudFlare
+    
+    subgraph Publish.yml
+        Astro(Build frontend)
+        CloudFlare[(CloudFlare)]
+        Astro--Astro-Pages\nAdapter-->CloudFlare
     end
+
     End((( )))
     CloudFlare-->End
 ```
 
-```mermaid
----
-title: Workflows
----
-graph TD
-    subgraph Notion Workflow
-    Actions(( ))
-    NotionDB[(Notion\nDB)]
-    UploadImages[Upload Images to Cloudinary]
-    Actions-->UploadImages
-    UploadImages--Update Notion Image links-->NotionDB--Run script\nExtract MDX files-->index.mjs
-    Commit[Commit to Repository]
-    Github(Github)
-    index.mjs---->Github--Set commit author-->Commit
-    end
-    Commit--Webhook Trigger---->PD
+## Verbose
 
-    subgraph Publish Workflow
-    PD[Checkout Design Repository]
-    PC[Pull Content Repository\ninto Design]
-    Format[Move &\nFormat MDX files]
-    PD-->PC-->Format--Run formatfrontmatter.sed-->Process--Run script-->rename.mjs
-    Process[Rename MDX files]
-    Publish[Publish to Cloudflare]
-    End((( )))
-    rename.mjs---->Publish-->End
-    end
-```
+1. Create .env - Github repository secrets
+1. Upload images from Notion - Cloudinary
+1. Download .mdx - Notion
+1. Parse YAML frontmatter on .mdx
+1. Upload .mdx - Github
+1. Trigger publish workflow
+1. Checkout .mdx repository
+1. Checkout Astro repository
+1. Rename .mdx
+1. Push to Cloudflare Pages

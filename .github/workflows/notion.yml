@@ -9,10 +9,13 @@ on:
 jobs:
   notion:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - name: Checkout current repository
       uses: actions/checkout@v3
-    - name: Create Env
+
+    - name: Create env
       run: |
         touch .env
         echo NOTION_TOKEN=${{ secrets.NOTION_TOKEN }} >> .env
@@ -21,41 +24,29 @@ jobs:
         echo CLOUDINARY_UPLOAD_FOLDER=${{ secrets.CLOUDINARY_UPLOAD_FOLDER }} >> .env
       env:
         NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-    - name: Run Scripts
+
+    - name: Run scripts
       run: |
         npx upload-notion-images-to-cloudinary
         npm i
-        rm -rf ./blog
+        rm -rf ./${{ secrets.FOLDER_NAME }}
         node scripts/index.mjs  
         node scripts/frontmatter.mjs 
+
     - name: Upload artifact
       uses: actions/upload-artifact@master
       with:
-        name: blog-artifact
-        path: blog
+        name: ${{ secrets.FOLDER_NAME }}-artifact
+        path: ${{ secrets.FOLDER_NAME }}
 
-  commit-to-repo:
-    needs: notion
-    runs-on: ubuntu-latest
-    permissions: 
-      contents: write
-    steps:
-      - name: Checkout current repository
-        uses: actions/checkout@v3
-      - name: Remove old blog data
-        run: rm -rf ./blog
-      - uses: actions/download-artifact@master
-        with:
-          name: blog-artifact
-          path: blog
-      - name: Commit blog content changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "chore: update blog"
-          branch: main
-          file_pattern: "*.mdx"
-          commit_user_name: github-actions[bot]
-          commit_user_email: github-actions[bot]@users.noreply.github.com
-          commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
-          disable_globbing: true
+    - name: Commit blog content changes
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "chore: update ${{ secrets.FOLDER_NAME }}"
+        branch: main
+        file_pattern: "*.mdx"
+        commit_user_name: github-actions[bot]
+        commit_user_email: github-actions[bot]@users.noreply.github.com
+        commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+        disable_globbing: true
 

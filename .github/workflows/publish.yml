@@ -30,11 +30,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@master
         with:
-          name: blog-artifact
+          name: ${{ secrets.FOLDER_NAME }}-artifact
           path: .
       - run: |
-          rm -rf ./src/pages/blog
-          mv ./blog ./src/pages
+          rm -rf ./src/pages/${{ secrets.FOLDER_NAME }}
+          mv ./${{ secrets.FOLDER_NAME }} ./src/pages
           npm install --save-dev fs path js-yaml
           node scripts/rename.mjs
       - name: astro
@@ -61,8 +61,8 @@ jobs:
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: 53c464573b64e485440feb5a5a36bb22
-          projectName: astro-blog
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: ${{ secrets.DESIGN_REPO_NAME }}
           directory: dist
           # Optional: Enable this if you want to have GitHub Deployments triggered
           # gitHubToken: ${{ secrets.GITHUB_TOKEN }}

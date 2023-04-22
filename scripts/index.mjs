@@ -31,7 +31,8 @@ SaveNotion.prototype.retrievePageTitle = function(pageId) {
     return fetchPage.then(response => {
         const { properties } = response;
         if(properties.Post)
-            return `${properties.Post.title[0]["plain_text"].replace(/\s+/g, '-').toLowerCase()}.mdx`;
+            return `${properties.Post.title[0]["plain_text"]
+                    .replace(/\s+/g, '-').toLowerCase()}.mdx`;
         else
             return `${pageId}.mdx`;
     })
