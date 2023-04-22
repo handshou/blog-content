@@ -26,20 +26,11 @@ title: Workflows
 ---
 graph TD
     subgraph Notion Workflow
-    Local{Does\n.env file\nexist?}
     Actions(( ))
-    Actions-->Local
-    Extract[Extract secrets\nfrom Github]
-    SaveToFile[Save to\n.env file]
-    Inject[Inject .env secrets\nto Github]
-    RunScript[setSecrets.mjs]
-    Local--Yes-->Inject--Run script-->RunScript
-    Local--No-->Extract-->SaveToFile
     NotionDB[(Notion\nDB)]
-    ExtractFromNotion[Extract\nMDX files in\n Notion]
-    SaveToFile-->ExtractFromNotion
-    RunScript-->ExtractFromNotion
-    ExtractFromNotion---->NotionDB--Run script\nExtract MDX files-->index.mjs
+    UploadImages[Upload Images to Cloudinary]
+    Actions-->UploadImages
+    UploadImages--Update Notion Image links-->NotionDB--Run script\nExtract MDX files-->index.mjs
     Commit[Commit to Repository]
     Github(Github)
     index.mjs---->Github--Set commit author-->Commit

@@ -9,7 +9,7 @@ import { Client } from '@notionhq/client';
 class SaveNotion {
     constructor(DATABASE_ID) {
         const notion = new Client({
-            auth: process.env.NOTION_API_KEY,
+            auth: process.env.NOTION_TOKEN,
           });
         const n2m = new NotionToMarkdown({ notionClient: notion });
         this.n2m = n2m;

@@ -12,32 +12,16 @@ jobs:
     steps:
     - name: Checkout current repository
       uses: actions/checkout@v3
-    - name: Check env existence
-      id:   check_env
-      uses: andstor/file-existence-action@v1
-      with:
-        files: ".env"
-    - name: Set Env
-      if: steps.check_files.outputs.files_exists == 'true'
-      run: |
-        npm i
-        type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
-          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-          && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-          && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-          && sudo apt update \
-          && sudo apt install gh -y
-        gh secret list >> .secrets
-        node scripts/setSecrets.mjs .secrets
     - name: Create Env
       run: |
         touch .env
-        echo NOTION_API_KEY=${{ secrets.NOTION_API_KEY }} >> .env
+        echo NOTION_TOKEN=${{ secrets.NOTION_TOKEN }} >> .env
         echo NOTION_DATABASE_ID=${{ secrets.NOTION_DATABASE_ID }} >> .env
       env:
-        NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
     - name: Run Scripts
       run: |
+        npx upload-notion-images-to-cloudinary
         npm i
         rm -rf ./blog
         node scripts/index.mjs  
