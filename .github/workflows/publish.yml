@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Design - external repository
         uses: actions/checkout@v3
         with:
-          repository: ${{ github.repository_owner }}/astro-blog
+          repository: ${{ github.repository_owner }}/${{ secrets.DESIGN_REPO_NAME }}
           token: ${{ secrets.PULL_ASTRO_REPO }}
           path: .
       - uses: actions/upload-artifact@master
