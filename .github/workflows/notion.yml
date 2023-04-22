@@ -17,6 +17,8 @@ jobs:
         touch .env
         echo NOTION_TOKEN=${{ secrets.NOTION_TOKEN }} >> .env
         echo NOTION_DATABASE_ID=${{ secrets.NOTION_DATABASE_ID }} >> .env
+        echo CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }} >> .env
+        echo CLOUDINARY_UPLOAD_FOLDER=${{ secrets.CLOUDINARY_UPLOAD_FOLDER }} >> .env
       env:
         NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
     - name: Run Scripts
